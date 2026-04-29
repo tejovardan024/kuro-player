@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuro Player</title>
+
+<style>
+body {
+  margin: 0;
+  background: #0f172a;
+  font-family: Arial;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin-top: 20px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #22c55e;
+  color: white;
+  cursor: pointer;
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+  border-radius: 12px;
+  border: none;
+  background: black;
+}
+
+.download {
+  margin-top: 10px;
+  text-align: right;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="controls">
+    <input id="videoId" placeholder="Enter Google Drive File ID">
+    <button onclick="loadVideo()">Play</button>
+  </div>
+
+  <iframe id="playerFrame" allow="autoplay" allowfullscreen></iframe>
+
+  <div class="download">
+    <a id="downloadBtn" target="_blank">
+      <button>⬇ Download</button>
+    </a>
+  </div>
+
+</div>
+
+<script>
+window.onload = function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (id) {
+    document.getElementById("videoId").value = id;
+    loadVideoDirect(id);
+  }
+};
+
+function loadVideo() {
+  const id = document.getElementById("videoId").value.trim();
+
+  if (!id) {
+    alert("Enter valid ID");
+    return;
+  }
+
+  window.location.href = "?id=" + id;
+}
+
+function loadVideoDirect(id) {
+  document.getElementById("playerFrame").src =
+    "https://drive.google.com/file/d/" + id + "/preview";
+
+  document.getElementById("downloadBtn").href =
+    "https://drive.google.com/uc?export=download&id=" + id;
+
+  document.querySelector(".download").style.display = "block";
+}
+</script>
+
+</body>
+</html>
